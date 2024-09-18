@@ -1,0 +1,19 @@
+﻿@model FileSite.Models.FileData
+
+<div class="align-content-center align-items-center">
+    @if(ViewData["message"]!= null)
+    {
+        <h5 class="alert-danger border-danger">@ViewData["message"]</h5>
+    }
+    else
+    {
+        <div class="border-dark border-secondary">
+            <h5 >@Model.Name</h5>
+            <p>Uploaded by: @(Model.OwnerId==null?"Anonymus File":Model.OwnerId)</p>
+        </div>
+        <form method="post">
+            <input type="hidden" name="path" value="@Model.Location"/>
+            <button type="submit" class="btn btn-dark">Download.</button>
+        </form>
+    }
+</div>

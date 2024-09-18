@@ -1,0 +1,33 @@
+﻿@inject FileSite.Repositories.GlobalDataRepository globalRep
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <p>
+        Currently Serving @globalRep.FileAmount.ToString() files
+        Currently Using @globalRep.TotalSize.ToString() bytes of storage
+    </p>
+    <footer class="fst-italic"> last updated:@globalRep.LastCheck.ToString()
+            <p class="alert-warning border-warning bg-warning">TODO: CHANGE STORAGE SIZE TO ACTUAL READABLE UNITS</p>
+    </footer>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* <div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+ *@

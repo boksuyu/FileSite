@@ -1,0 +1,26 @@
+﻿@model FileSite.Data.ViewModels.FileDataVM
+@using FileSite.Data.Enums
+
+<h4>Select a file to upload</h4>
+<form asp-action="Upload" enctype="multipart/form-data">
+    <div>
+        <input asp-for="File"/>
+        <span asp-validation-for="File">please enter a file</span>
+    </div>
+    <div>
+        <label asp-for="LifeTime">File LifeTime</label>
+        <select asp-for="LifeTime" asp-items="@Html.GetEnumSelectList<FileFileTimeEnum>()">
+            <!--Options-->
+        </select>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+@{
+    if (ViewData["message"] != null)
+    {
+        <p class="alert alert-danger">@ViewData["message"]</p>
+    }
+}
