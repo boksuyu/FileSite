@@ -10,7 +10,9 @@ namespace FileSite
 {
     public static class RoutineScripts
     {
-        public static async Task CheckFileLifeTime(object? sender, string path) {
+        public static async Task CheckFileLifeTime(object? sender, string? path) {
+            if(path ==null) throw new ArgumentNullException(nameof(path));
+
 
             var options=new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(path);
             ApplicationDbContext _context = new(options.Options);
