@@ -12,6 +12,7 @@ using System.Timers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHostedService<FileCleanup>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFileDataRepository, FileDataRepository>();
@@ -45,11 +46,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-await Task.FromResult(() => seed.SeedData(app));
+await Task.FromResult(() => Seed.SeedData(app));
 
-System.Timers.Timer RoutineCleanup = new(21_600_000);
-RoutineCleanup.Elapsed += async (sender, path) => await RoutineScripts.CheckFileLifeTime(sender, builder.Configuration.GetConnectionString("DefaultConnection"));
-RoutineCleanup.Start();
+
 
 
 app.Run();

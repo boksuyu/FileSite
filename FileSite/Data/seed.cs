@@ -7,7 +7,7 @@ using System.Net;
 
 namespace FileSite.Data
 {
-    public  class seed
+    public  class   Seed
     {
 
         public static async Task SeedData(IApplicationBuilder app)
