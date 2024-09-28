@@ -3,11 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Nodes;
 
 namespace FileSite.Services
-{   //cant add this is as a service of ANY KIND, have to use it inside a scoped one like a normal class
+{   //for GlobalDataRepository
+
+    /// <summary>
+    /// USE AS A SINGLETON
+    /// </summary>
     public class FileTypeCounter : IHostedService, IDisposable
     {
         public Dictionary<string, int> Dict = new Dictionary<string, int>();
         private Timer? _timer;
+
+        public FileTypeCounter() 
+        {
+            StartAsync(CancellationToken.None);
+        }
 
         public void CountFileExtensions(object? state)
         {
@@ -22,11 +31,12 @@ namespace FileSite.Services
                 Dict[fileInfo.Extension] = ++K;
 
             }
+            Console.WriteLine("eefwefsdfsdf");
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
-        {
-            _timer = new(CountFileExtensions, null, TimeSpan.Zero, TimeSpan.FromSeconds(3));
+        {   if(_timer != null) { _timer.Dispose(); }
+            _timer = new(CountFileExtensions, null, TimeSpan.Zero, TimeSpan.FromHours(6.0));
             return Task.CompletedTask;
         }
 

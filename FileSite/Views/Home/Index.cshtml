@@ -1,4 +1,5 @@
 ﻿@inject FileSite.Repositories.GlobalDataRepository globalRep
+@inject FileSite.Services.FileTypeCounter FileTypes
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -9,7 +10,7 @@
         Currently Using @globalRep.TotalSize.ToString() bytes of storage
     </p>
         @{
-            foreach (var i in globalRep.FileTypes.Dict)
+            foreach (var i in FileTypes.Dict)
             {
                 <p>@i.Key : @i.Value.ToString()</p>
             }

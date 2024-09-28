@@ -19,7 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddSingleton<GlobalDataRepository>(); //this class is singleton just to test stuff, it would be a lot better as a hosted service
+builder.Services.AddSingleton<GlobalDataRepository>()
+                .AddSingleton<FileTypeCounter>();
+
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
