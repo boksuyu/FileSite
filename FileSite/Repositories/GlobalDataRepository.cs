@@ -1,5 +1,6 @@
 ﻿using FileSite.Data;
 using FileSite.Models;
+using FileSite.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -12,6 +13,7 @@ namespace FileSite.Repositories
     public class GlobalDataRepository
     {
         private readonly ApplicationDbContext _context;
+        public FileTypeCounter FileTypes;
         public DateTimeOffset LastCheck { get; private set; }
         public long TotalSize { get; private set; }
         public int FileAmount { get; private set; }
@@ -24,6 +26,9 @@ namespace FileSite.Repositories
             var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(config["ConnectionStrings:DefaultConnection"]);
              _context = new(options.Options);
             LastCheck = DateTimeOffset.UnixEpoch;
+            FileTypes = new FileTypeCounter();
+            FileTypes.StartAsync(CancellationToken.None);
+            Console.WriteLine("YWNBAW");
         }
 
         public void UpdateGlobalData()

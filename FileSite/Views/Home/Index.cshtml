@@ -8,6 +8,12 @@
         Currently Serving @globalRep.FileAmount.ToString() files
         Currently Using @globalRep.TotalSize.ToString() bytes of storage
     </p>
+        @{
+            foreach (var i in globalRep.FileTypes.Dict)
+            {
+                <p>@i.Key : @i.Value.ToString()</p>
+            }
+        }
     <footer class="fst-italic"> last updated:@globalRep.LastCheck.ToString()
             <p class="alert-warning border-warning bg-warning">TODO: CHANGE STORAGE SIZE TO ACTUAL READABLE UNITS</p>
     </footer>
