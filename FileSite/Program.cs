@@ -1,12 +1,11 @@
-using FileSite;
 using FileSite.Data;
 using FileSite.Data.Interfaces;
 using FileSite.Models;
 using FileSite.Repositories;
+using FileSite.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Timers;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddSingleton<GlobalDataRepository>();
+builder.Services.AddSingleton<GlobalDataRepository>()
+                .AddSingleton<FileTypeCounter>();
+
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();

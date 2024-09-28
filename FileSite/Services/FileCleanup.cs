@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Diagnostics;
 using FileSite.Data.Enums;
 using Microsoft.Extensions.Configuration;
-namespace FileSite;
+using System.Text.Json.Nodes;
+namespace FileSite.Services;
 
-public  class FileCleanup: IHostedService, IDisposable
-{   
-    private  ILogger<FileCleanup> _logger;
-    private System.Threading.Timer? _timer=null;
+public class FileCleanup : IHostedService, IDisposable
+{
+    private ILogger<FileCleanup> _logger;
+    private Timer? _timer = null;
 
 
     public FileCleanup(ILogger<FileCleanup> logger)
@@ -18,15 +19,16 @@ public  class FileCleanup: IHostedService, IDisposable
         _logger = logger;
     }
 
-    public async void CheckFileLifeTime(object? state) {
-        var options = new DbContextOptionsBuilder().UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=FileSite;Integrated Security=True;Connect Timeout=15;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
-        ApplicationDbContext _context=new(options.Options);
+    public async void CheckFileLifeTime(object? state)
+    {
+        var options = new DbContextOptionsBuilder().UseSqlServer(JsonNode.Parse(File.ReadAllText("appsettings.json"))["ConnectionStrings"]["DefaultConnection"].ToString());
+        ApplicationDbContext _context = new(options.Options);
 
-        
-        List<FileData> toBeDeleted = await _context.FileDatas.ToListAsync<FileData>();
-        foreach (FileData fileData in toBeDeleted) 
+
+        List<FileData> toBeDeleted = await _context.FileDatas.ToListAsync();
+        foreach (FileData fileData in toBeDeleted)
         {
-            switch (fileData.LifeTime) 
+            switch (fileData.LifeTime)
             {
                 case FileFileTimeEnum.oneDay:
                     if (fileData.CreationDate + 86400 < DateTimeOffset.UtcNow.ToUnixTimeSeconds())
@@ -41,19 +43,20 @@ public  class FileCleanup: IHostedService, IDisposable
                     {
                         File.Delete(fileData.Location);
                         _logger.LogInformation($"Deleting {fileData.Location}. Lifetime Ended");
-                        _context.Remove(fileData); }
+                        _context.Remove(fileData);
+                    }
                     break;
                 case FileFileTimeEnum.oneMonth:
                     if (fileData.CreationDate + 2629743 < DateTimeOffset.UtcNow.ToUnixTimeSeconds())
                     {
                         File.Delete(fileData.Location);
                         _logger.LogInformation($"Deleting {fileData.Location}. Lifetime Ended");
-                        _context.Remove(fileData); 
+                        _context.Remove(fileData);
                     }
                     break;
                 case FileFileTimeEnum.oneYear:
                     if (fileData.CreationDate + 31556926 < DateTimeOffset.UtcNow.ToUnixTimeSeconds())
-                    { 
+                    {
                         File.Delete(fileData.Location);
                         _logger.LogInformation($"Deleting {fileData.Location}. Lifetime Ended");
                         _context.Remove(fileData);
