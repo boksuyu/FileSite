@@ -8,7 +8,8 @@ using System.Runtime.Intrinsics;
 
 namespace FileSite.Repositories
 {   /// <summary>
-/// This class exists to test singletons
+/// This class purely exists to test singletons, it would work better as a hosted service
+/// TODO: turn this into a hosted service
 /// </summary>
     public class GlobalDataRepository
     {
@@ -29,9 +30,10 @@ namespace FileSite.Repositories
 
         public void UpdateGlobalData()
         {
-            //if (LastCheck.ToUnixTimeSeconds() + 120L> DateTimeOffset.UtcNow.ToUnixTimeSeconds())
-            //{ return;
-            //}
+            if (LastCheck.ToUnixTimeSeconds() + 120L > DateTimeOffset.UtcNow.ToUnixTimeSeconds())
+            {
+                return;
+            }
 
             long temp = 0;
             int amount = 0;

@@ -19,8 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddSingleton<GlobalDataRepository>()
-                .AddSingleton<FileTypeCounter>();
+builder.Services.AddSingleton<GlobalDataRepository>();
+builder.Services.AddSingleton<FileTypeCounter>()
+                .AddHostedService<FileTypeCounter>(provider => provider.GetService<FileTypeCounter>());
 
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddMemoryCache();

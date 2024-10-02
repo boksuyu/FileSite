@@ -3,19 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Nodes;
 
 namespace FileSite.Services
-{   //for GlobalDataRepository
-
-    /// <summary>
-    /// USE AS A SINGLETON
-    /// </summary>
+{
     public class FileTypeCounter : IHostedService, IDisposable
     {
         public Dictionary<string, int> Dict = new Dictionary<string, int>();
         private Timer? _timer;
-
-        public FileTypeCounter() 
+        private ILogger<FileTypeCounter> _logger;
+        public FileTypeCounter(ILogger<FileTypeCounter> logger)
         {
-            StartAsync(CancellationToken.None);
+            _logger = logger;
         }
 
         public void CountFileExtensions(object? state)
@@ -31,17 +27,18 @@ namespace FileSite.Services
                 Dict[fileInfo.Extension] = ++K;
 
             }
-            Console.WriteLine("eefwefsdfsdf");
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {   if(_timer != null) { _timer.Dispose(); }
+            _logger.LogInformation(eventId:100,"FileTypeCounter is running");
             _timer = new(CountFileExtensions, null, TimeSpan.Zero, TimeSpan.FromHours(6.0));
             return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation(eventId:-100,"FileTypeCounter has stopped");
             _timer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
         }

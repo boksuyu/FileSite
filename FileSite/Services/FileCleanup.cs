@@ -71,7 +71,7 @@ public class FileCleanup : IHostedService, IDisposable
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("File Cleanup is running.");
+        _logger.LogInformation(eventId:100,"File Cleanup is running.");
         _timer = new Timer(CheckFileLifeTime, null, TimeSpan.Zero, TimeSpan.FromHours(6.0));
 
         return Task.CompletedTask;
@@ -79,7 +79,7 @@ public class FileCleanup : IHostedService, IDisposable
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("File Cleanup has stopped.");
+        _logger.LogInformation(eventId:-100,"File Cleanup has stopped.");
         _timer?.Change(Timeout.Infinite, 0);
         return Task.CompletedTask;
     }

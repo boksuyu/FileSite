@@ -3,6 +3,7 @@ using FileSite.Data.Interfaces;
 using FileSite.Data.ViewModels;
 using FileSite.Models;
 using FileSite.Repositories;
+using FileSite.Services;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,19 +19,22 @@ namespace FileSite.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IFileDataRepository _fileDataRepository;
         private readonly GlobalDataRepository _globalDataRepository;
-
+        private readonly FileTypeCounter _fileTypeCounter;
         public HomeController(ILogger<HomeController> logger,
                               IFileDataRepository fileDataRepository,
-                              GlobalDataRepository globalDataRepository)
+                              GlobalDataRepository globalDataRepository,
+                              FileTypeCounter fileTypeCounter)
         {
             _logger = logger;
             _fileDataRepository = fileDataRepository;
             _globalDataRepository = globalDataRepository;
+            _fileTypeCounter = fileTypeCounter;
 
         }
         
         public IActionResult Index()
-        { 
+        {   
+            _globalDataRepository.UpdateGlobalData();
             return View();
         }
 
@@ -61,7 +65,7 @@ namespace FileSite.Controllers
                 return View();
             }
 
-            _globalDataRepository.UpdateGlobalData();
+            
             ViewData["message"] = $"Your download link: <SITEURL>/Home/Files/{hash} \n Do not Lose this link!";
             return View();
         }
