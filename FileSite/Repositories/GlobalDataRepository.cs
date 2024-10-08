@@ -23,7 +23,7 @@ namespace FileSite.Repositories
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer(config["ConnectionStrings:DefaultConnection"]);
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseNpgsql(config["ConnectionStrings:DefaultConnection"]);
              _context = new(options.Options);
             LastCheck = DateTimeOffset.UnixEpoch;
         }

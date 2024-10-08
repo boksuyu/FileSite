@@ -21,7 +21,7 @@ public class FileCleanup : IHostedService, IDisposable
 
     public async void CheckFileLifeTime(object? state)
     {
-        var options = new DbContextOptionsBuilder().UseSqlServer(JsonNode.Parse(File.ReadAllText("appsettings.json"))["ConnectionStrings"]["DefaultConnection"].ToString());
+        var options = new DbContextOptionsBuilder().UseNpgsql(JsonNode.Parse(File.ReadAllText("appsettings.json"))["ConnectionStrings"]["DefaultConnection"].ToString());
         ApplicationDbContext _context = new(options.Options);
 
 

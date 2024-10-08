@@ -10,7 +10,7 @@ namespace FileSite.Data
     public  class   Seed
     {
 
-        public static async Task SeedData(IApplicationBuilder app)
+        public static async void SeedData(IApplicationBuilder app)
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {

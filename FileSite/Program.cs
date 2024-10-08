@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,7 +16,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFileDataRepository, FileDataRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddSingleton<GlobalDataRepository>();
 builder.Services.AddSingleton<FileTypeCounter>()
@@ -26,6 +25,7 @@ builder.Services.AddSingleton<FileTypeCounter>()
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
 var app = builder.Build();
@@ -48,8 +48,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-await Task.FromResult(() => Seed.SeedData(app));
-
+//await Task.FromResult(() => Seed.SeedData(app)); DEPRICATED//////for task version
+Seed.SeedData(app);
 
 
 

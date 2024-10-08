@@ -16,7 +16,7 @@ namespace FileSite.Services
 
         public void CountFileExtensions(object? state)
         {
-            var options = new DbContextOptionsBuilder().UseSqlServer(JsonNode.Parse(File.ReadAllText("appsettings.json"))["ConnectionStrings"]["DefaultConnection"].ToString());
+            var options = new DbContextOptionsBuilder().UseNpgsql(JsonNode.Parse(File.ReadAllText("appsettings.json"))["ConnectionStrings"]["DefaultConnection"].ToString());
             ApplicationDbContext context = new(options.Options);
             int K = 0;
             Dict.Clear();
