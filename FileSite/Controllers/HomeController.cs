@@ -1,15 +1,9 @@
-﻿using FileSite.Data;
-using FileSite.Data.Interfaces;
+﻿using FileSite.Data.Interfaces;
 using FileSite.Data.ViewModels;
 using FileSite.Models;
 using FileSite.Repositories;
 using FileSite.Services;
-using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.FileProviders;
-using System.IO;
-using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace FileSite.Controllers
@@ -58,7 +52,7 @@ namespace FileSite.Controllers
                 return View();
             }
 
-            string hash = await _fileDataRepository.Add(fileView, "C:\\zFileSite");
+            string hash = await _fileDataRepository.Add(fileView, "/home/ardad/Desktop/FilesUploaded");
             if (hash == null) {
                 string existingHash = BitConverter.ToString(MD5.Create().ComputeHash(fileView.File.OpenReadStream())).Replace("-", "").ToLower();
                 ViewData["Message"] = $"Duplicate file! <SITEURL>/Home/Files/{existingHash} \n!";
@@ -96,5 +90,15 @@ namespace FileSite.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<ActionResult> GetFileTypes()
+        {
+            List<object> fileTypes = new List<object>();
+            List<string> labels=_fileTypeCounter.Dict.Keys.ToList();
+            List<int> count = _fileTypeCounter.Dict.Values.ToList();
+            fileTypes.Add(labels);
+            fileTypes.Add(count);
+            return this.Json(fileTypes); 
+        }
     }
 }

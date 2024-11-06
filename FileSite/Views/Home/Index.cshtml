@@ -1,4 +1,4 @@
-﻿@inject FileSite.Repositories.GlobalDataRepository globalRep
+﻿@inject FileSite.Repositories.GlobalDataRepository GlobalRep
 @inject FileSite.Services.FileTypeCounter FileTypes
 @{
     ViewData["Title"] = "Home Page";
@@ -6,35 +6,71 @@
 
 <div class="text-center">
     <p>
-        Currently Serving @globalRep.FileAmount.ToString() files
-        Currently Using @globalRep.TotalSize.ToString() bytes of storage
+        Currently Serving @GlobalRep.FileAmount.ToString() files
+        Currently Using @GlobalRep.TotalSize.ToString() bytes of storage
     </p>
-        @{
-            foreach (var i in FileTypes.Dict)
-            {
-                <p>@i.Key : @i.Value.ToString()</p>
-            }
-        }
-    <footer class="fst-italic"> last updated:@globalRep.LastCheck.ToString()
+    
+    <div class="fst-italic"> last updated:@GlobalRep.LastCheck.ToString()
             <p class="alert-warning border-warning bg-warning">TODO: CHANGE STORAGE SIZE TO ACTUAL READABLE UNITS</p>
-    </footer>
+    </div>
 </div>
 
 
+<h1 id="niggapenis"></h1>
 
+<!--For people with Javascript disabled-->
+<noscript>@{
+  foreach (var i in FileTypes.Dict)
+  {<p>@i.Key : @i.Value.ToString()</p>}
+  }
+</noscript>
 
-
-
-
-
-
-
-
-
-
-
-@* <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!--For people with Javascript enabled-->
+<div class="">
+  <canvas id="myChart" height="450" width="300"></canvas>
 </div>
- *@
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script type="text/javascript">
+    function GetJSON_Simple() {
+        var resp = [];
+        $.ajax({
+            type: "Post",
+            url: '/Home/GetFileTypes/',
+            async: false,
+            contentType: "application/json",
+            success: function (data) {
+                resp.push(data);
+            },
+            error: function (req, status, error) {
+                // do something with error
+                alert("error");
+            }
+        });
+        return resp;
+    }
+
+    const simpleData = GetJSON_Simple();
+    const ctx = document.getElementById("myChart");
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [...simpleData[0][0]],
+            datasets: [{
+                label: 'Hosting',
+                data: [...simpleData[0][1]],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            maintainAspectRatio:false
+        }
+    });
+
+    
+    
+    
+    
+
+    
+</script>
