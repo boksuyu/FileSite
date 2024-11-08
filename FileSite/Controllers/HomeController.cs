@@ -10,16 +10,16 @@ namespace FileSite.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;//DEPRECATED
         private readonly IFileDataRepository _fileDataRepository;
         private readonly GlobalDataRepository _globalDataRepository;
         private readonly FileTypeCounter _fileTypeCounter;
-        public HomeController(ILogger<HomeController> logger,
+        public HomeController(//ILogger<HomeController> logger,//DEPRECATED
                               IFileDataRepository fileDataRepository,
                               GlobalDataRepository globalDataRepository,
                               FileTypeCounter fileTypeCounter)
         {
-            _logger = logger;
+            //_logger = logger;//DEPRECATED
             _fileDataRepository = fileDataRepository;
             _globalDataRepository = globalDataRepository;
             _fileTypeCounter = fileTypeCounter;
@@ -77,7 +77,7 @@ namespace FileSite.Controllers
                 ViewData["message"] = "Error!";
                 return View();
             }
-
+            
             return View(file);
 
         }

@@ -6,9 +6,12 @@ using FileSite.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
 // Add services to the container.
 builder.Services.AddHostedService<FileCleanup>();
 builder.Services.AddControllersWithViews();
@@ -26,8 +29,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<A
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 
+builder.Services.AddSerilog();//redirects normal logs to serilog
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +47,8 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseAuthentication();
 
+app.UseSerilogRequestLogging();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -51,6 +56,6 @@ app.MapControllerRoute(
 //await Task.FromResult(() => Seed.SeedData(app)); DEPRICATED//////for task version
 Seed.SeedData(app);
 
-
+Log.Information("helo");
 
 app.Run();

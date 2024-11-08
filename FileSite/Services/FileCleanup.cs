@@ -6,10 +6,12 @@ using System.Diagnostics;
 using FileSite.Data.Enums;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json.Nodes;
+using Serilog;
+
 namespace FileSite.Services;
 
 public class FileCleanup : IHostedService, IDisposable
-{
+{   //default implementation of logger is still in use
     private ILogger<FileCleanup> _logger;
     private Timer? _timer = null;
 
@@ -34,7 +36,7 @@ public class FileCleanup : IHostedService, IDisposable
                     if (fileData.CreationDate + 86400 < DateTimeOffset.UtcNow.ToUnixTimeSeconds())
                     {
                         File.Delete(fileData.Location);
-                        _logger.LogInformation($"Deleting {fileData.Location}. Lifetime Ended");
+                        Log.Information("Deleting {@fileData.Location}. Lifetime Ended",fileData.Location);
                         _context.Remove(fileData);
                     }
                     break;
@@ -42,7 +44,7 @@ public class FileCleanup : IHostedService, IDisposable
                     if (fileData.CreationDate + 604800 < DateTimeOffset.UtcNow.ToUnixTimeSeconds())
                     {
                         File.Delete(fileData.Location);
-                        _logger.LogInformation($"Deleting {fileData.Location}. Lifetime Ended");
+                        Log.Information("Deleting {@fileData.Location}. Lifetime Ended",fileData.Location);
                         _context.Remove(fileData);
                     }
                     break;
@@ -50,7 +52,7 @@ public class FileCleanup : IHostedService, IDisposable
                     if (fileData.CreationDate + 2629743 < DateTimeOffset.UtcNow.ToUnixTimeSeconds())
                     {
                         File.Delete(fileData.Location);
-                        _logger.LogInformation($"Deleting {fileData.Location}. Lifetime Ended");
+                        Log.Information("Deleting {@fileData.Location}. Lifetime Ended",fileData.Location);
                         _context.Remove(fileData);
                     }
                     break;
@@ -58,7 +60,7 @@ public class FileCleanup : IHostedService, IDisposable
                     if (fileData.CreationDate + 31556926 < DateTimeOffset.UtcNow.ToUnixTimeSeconds())
                     {
                         File.Delete(fileData.Location);
-                        _logger.LogInformation($"Deleting {fileData.Location}. Lifetime Ended");
+                        Log.Information("Deleting {@fileData.Location}. Lifetime Ended",fileData.Location);
                         _context.Remove(fileData);
                     }
                     break;

@@ -124,62 +124,7 @@ namespace FileSite.Migrations
 
                     b.ToTable("FileDatas");
                 });
-
-            modelBuilder.Entity("FileSite.Models.Logs.FileActionLogs", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("ActionType")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("FileHash")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long?>("ParentLogId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentLogId");
-
-                    b.ToTable("FileActionLogs");
-                });
-
-            modelBuilder.Entity("FileSite.Models.Logs.ServiceLogs", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTimeOffset>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Entry")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("Service")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ServiceLogs");
-                });
+            
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -321,15 +266,7 @@ namespace FileSite.Migrations
 
                     b.Navigation("Owner");
                 });
-
-            modelBuilder.Entity("FileSite.Models.Logs.FileActionLogs", b =>
-                {
-                    b.HasOne("FileSite.Models.Logs.ServiceLogs", "ParentLog")
-                        .WithMany("FileActionLogs")
-                        .HasForeignKey("ParentLogId");
-
-                    b.Navigation("ParentLog");
-                });
+            
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -386,11 +323,7 @@ namespace FileSite.Migrations
                 {
                     b.Navigation("Files");
                 });
-
-            modelBuilder.Entity("FileSite.Models.Logs.ServiceLogs", b =>
-                {
-                    b.Navigation("FileActionLogs");
-                });
+            
 #pragma warning restore 612, 618
         }
     }
