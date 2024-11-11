@@ -3,6 +3,7 @@ using FileSite.Data.Interfaces;
 using FileSite.Models;
 using FileSite.Repositories;
 using FileSite.Services;
+using FileSite.Services.EmailServicing;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ builder.Services.AddHostedService<FileCleanup>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFileDataRepository, FileDataRepository>();
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -25,7 +27,9 @@ builder.Services.AddSingleton<GlobalDataRepository>();
 builder.Services.AddSingleton<FileTypeCounter>()
                 .AddHostedService<FileTypeCounter>(provider => provider.GetService<FileTypeCounter>());
 
-builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<AppUser, IdentityRole>(op => op.User.RequireUniqueEmail=true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 
@@ -57,5 +61,4 @@ app.MapControllerRoute(
 Seed.SeedData(app);
 
 Log.Information("helo");
-
 app.Run();

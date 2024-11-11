@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using FileSite.Data;
 using FileSite.Data.ViewModels;
 using FileSite.Models;
+using FileSite.Services.EmailServicing;
+using Serilog;
 
 namespace FileSite.Controllers
 {
@@ -11,13 +13,14 @@ namespace FileSite.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ApplicationDbContext _context;
-
-
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationDbContext context)
+        private readonly EmailService _emailService;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
+                                ApplicationDbContext context, EmailService emailService)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
 
         public IActionResult Login()
@@ -92,6 +95,15 @@ namespace FileSite.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        [HttpPost("Account/PasswordRecovery/{to}")]
+        public JsonResult PasswordRecovery(string to)
+        {   
+            EmailVM request = new EmailVM() {to = to};
+           request.subject = "subject"; 
+           request.body = "body";
+            _emailService.SendEmail(request);
+            Log.Information(to);
+            return Json("success");
+        }
     }
 }

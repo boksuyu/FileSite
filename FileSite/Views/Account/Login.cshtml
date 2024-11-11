@@ -35,7 +35,32 @@
                     </div>
                 </form>
                 <a asp-controller="Account" asp-action="Register">No account? Sign up now!</a>
+                <button onClick="ShowRecovery()">Forgot Password?</button>
+                <div id="RecoveryDiv" class="visually-hidden">
+                    <form onsubmit="PasswordRecovery(event)">
+                        <label for="RecoveryInput"></label>
+                        <input id="RecoveryInput" type="text"/>
+                        <button type="submit">sub</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function PasswordRecovery(event)
+    {   event.preventDefault()
+        $.ajax({
+        type:"Post",
+            url:`PasswordRecovery/${$("#RecoveryInput").val()}`,
+        async:true,
+        success:()=>console.log("hh")})
+    }
+    function ShowRecovery()
+    {
+        const show=document.getElementById("RecoveryDiv");
+        show.classList.remove("visually-hidden");
+        console.log($("#RecoveryInput").val());
+    }
+</script>
