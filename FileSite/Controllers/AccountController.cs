@@ -128,6 +128,6 @@ namespace FileSite.Controllers
             await _userManager.ResetPasswordAsync(user, reset, request.NewPassword);
             _emailService.CleanUsedLink(link);
             return RedirectToAction("Index", "Home");
-        } 
+        }
     }
 }
