@@ -10,15 +10,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00d238d5-32b6-4748-a8eb-d3e41b25fe24" name="Changes" comment="add a working password changing system among other things. Dont forget to commit/push next time.">
-      <change afterPath="$PROJECT_DIR$/FileSite/Data/ViewModels/AccountRecoveryVM.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FileSite/Views/Account/NewPassword.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FileSite/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FileSite/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FileSite/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FileSite/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FileSite/Services/EmailServicing/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FileSite/Services/EmailServicing/EmailService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FileSite/Views/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FileSite/Views/Account/Login.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FileSite/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/FileSite/appsettings.json" afterDir="false" />
-    </list>
+    <list default="true" id="00d238d5-32b6-4748-a8eb-d3e41b25fe24" name="Changes" comment="testing" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -96,27 +88,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.FileSite.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;971df723&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.FileSite.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.uml",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.FileSite">
     <configuration name="FileSite: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/FileSite/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="-6452288760115410251" uuid_low="-5804213870510775590" />
@@ -300,7 +292,8 @@
     <MESSAGE value="add serilog support" />
     <MESSAGE value="Add a configurable simple Email servicing" />
     <MESSAGE value="add a working password changing system among other things. Dont forget to commit/push next time." />
-    <option name="LAST_COMMIT_MESSAGE" value="add a working password changing system among other things. Dont forget to commit/push next time." />
+    <MESSAGE value="testing" />
+    <option name="LAST_COMMIT_MESSAGE" value="testing" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
