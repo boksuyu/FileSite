@@ -12,12 +12,10 @@ namespace FileSite.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly ApplicationDbContext _context;
         private readonly EmailService _emailService;
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
-                                ApplicationDbContext context, EmailService emailService)
+                                 EmailService emailService)
         {
-            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
@@ -25,8 +23,8 @@ namespace FileSite.Controllers
 
         public IActionResult Login()
         {
-            var PageReloaded = new LoginViewModel();
-            return View(PageReloaded);
+            var pageReloaded = new LoginViewModel();
+            return View(pageReloaded);
         }
 
         [HttpPost]
@@ -67,10 +65,10 @@ namespace FileSite.Controllers
             if (!ModelState.IsValid)
             { return View(register); }
 
-            AppUser user = await _userManager.FindByEmailAsync(register.EmailAddress);
+            AppUser? user = await _userManager.FindByEmailAsync(register.EmailAddress);
             if (user != null)
             {
-                TempData["Eroor"] = "Email In Use";
+                TempData["Error"] = "Email In Use";
                 return View(register);
             }
 
@@ -83,7 +81,7 @@ namespace FileSite.Controllers
             var newUserResponse = await _userManager.CreateAsync(newUser, register.Password);
 
             if (newUserResponse.Succeeded) { await _userManager.AddToRoleAsync(newUser, UserRoles.User); }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login");
 
         }
         //------------------------------------//
@@ -95,15 +93,41 @@ namespace FileSite.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost("Account/PasswordRecovery/{to}")]
-        public JsonResult PasswordRecovery(string to)
+        [HttpPost("Account/PasswordRecovery")]
+        public IActionResult PasswordRecovery(string to)
         {   
             EmailVM request = new EmailVM() {to = to};
-           request.subject = "subject"; 
-           request.body = "body";
+            request.subject = "subject"; 
+            request.body = "body";
+            if (_userManager.FindByEmailAsync(request.to) == null)
+                { return RedirectToAction("Login");}
             _emailService.SendEmail(request);
-            Log.Information(to);
-            return Json("success");
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet("Account/NewPassword/{link}")]
+        public IActionResult NewPassword(string link)
+        {
+            string? email = _emailService.CheckAvailableLink(link);
+            if (email == null)
+            { return BadRequest(); }
+            ViewBag.to = email;
+            return View();
+        }
+
+        [HttpPost("Account/NewPassword/{link}")]
+        public async Task<IActionResult> NewPassword(AccountRecoveryVM request, string link)
+        {   request.Email = _emailService.CheckAvailableLink(link);
+            if (request.Email == null || request.NewPassword == null)
+                { return BadRequest(); }
+            AppUser? user = _userManager.FindByEmailAsync(request.Email).Result;
+            if (user==null)
+                { return BadRequest(); }
+
+            string reset =await _userManager.GeneratePasswordResetTokenAsync(user);
+            await _userManager.ResetPasswordAsync(user, reset, request.NewPassword);
+            _emailService.CleanUsedLink(link);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

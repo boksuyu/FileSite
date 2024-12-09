@@ -13,26 +13,29 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
-// Add services to the container.
-builder.Services.AddHostedService<FileCleanup>();
+
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFileDataRepository, FileDataRepository>();
-builder.Services.AddScoped<EmailService>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 builder.Services.AddSingleton<GlobalDataRepository>();
 builder.Services.AddSingleton<FileTypeCounter>()
                 .AddHostedService<FileTypeCounter>(provider => provider.GetService<FileTypeCounter>());
+builder.Services.AddSingleton<EmailService>()
+                .AddHostedService<EmailService>(provider => provider.GetService<EmailService>());
+builder.Services.AddHostedService<FileCleanup>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(op => op.User.RequireUniqueEmail=true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
-
 builder.Services.AddSerilog();//redirects normal logs to serilog
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 var app = builder.Build();
