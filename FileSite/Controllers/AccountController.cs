@@ -79,7 +79,6 @@ namespace FileSite.Controllers
             };
 
             var newUserResponse = await _userManager.CreateAsync(newUser, register.Password);
-
             if (newUserResponse.Succeeded) { await _userManager.AddToRoleAsync(newUser, UserRoles.User); }
             return RedirectToAction("Login");
 
